@@ -3,6 +3,7 @@ require 'nokogiri'
 require 'tempfile'
 require 'logger'
 require 'algorithms'
+require 'dns_cache'
 
 # Fetches all pages from a starting URL (Breadth first)
 class Crawler
@@ -12,21 +13,21 @@ class Crawler
     @log = Logger.new STDOUT
   end
   
-  def start
-    until @queue.empty?
+  def start(limit=-1)
+    until @queue.empty? || limit == 0
       url = @queue.pop
       page = fetch_page url
       
       enqueue urls_extracted_from(page, url)
-      save_to_disk page, url
+      # save_to_disk page, url
+      limit -= 1
     end
   end
   
   private
   
   def fetch_page(url)
-    open(url).read
-    # TODO: use DNS cache to prevent duplicate lookup
+    open(DnsCache.resolve(url)).read
   end
   
   def urls_extracted_from(page,url)
