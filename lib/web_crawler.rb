@@ -1,7 +1,6 @@
 require 'open-uri'
 require 'nokogiri'
 require 'tempfile'
-require 'logger'
 require 'algorithms'
 require 'dns_cache'
 
@@ -10,7 +9,6 @@ class Crawler
   def initialize(starting_url)
     @queue = Containers::Queue.new [starting_url] # Can this be a set Q ?
     @repository = Dir.mktmpdir
-    @log = Logger.new STDOUT
   end
   
   def start(limit=-1)
@@ -45,14 +43,11 @@ class Crawler
     "#{url}/#{href}"
   end
   
+  # TODO: move to Repository.store
   def save_to_disk(page,url)
     uri = url.gsub /\//, '_'
     saved_page = Tempfile.new [uri, ''], @repository
     saved_page << page
     saved_page.close
-  end
-  
-  def log(message)
-    @log.info message
   end
 end
