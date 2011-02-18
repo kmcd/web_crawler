@@ -4,8 +4,7 @@ require 'tempfile'
 require 'logger'
 require 'algorithms'
 
-# Fetches all pages from a starting URL
-# Breadth first
+# Fetches all pages from a starting URL (Breadth first)
 class Crawler
   def initialize(starting_url)
     @queue = Containers::Queue.new [starting_url] # Can this be a set Q ?
@@ -16,10 +15,9 @@ class Crawler
   def start
     until @queue.empty?
       url = @queue.pop
-      
-      @log.info "Fetching: #{url}"
       page = fetch_page url
-      extract_urls_from(page, url).each {|new_url| @queue << new_url }
+      
+      enqueue urls_extracted_from(page, url)
       save_to_disk page, url
     end
   end
@@ -31,10 +29,14 @@ class Crawler
     # TODO: use DNS cache to prevent duplicate lookup
   end
   
-  def extract_urls_from(page,url)
+  def urls_extracted_from(page,url)
     Nokogiri::HTML(page).xpath("//a/@href").map do |element| 
       canonicalise element.value, url
     end
+  end
+  
+  def enqueue(urls)
+    urls.each {|url| @queue << url }
   end
   
   def canonicalise(href,url)
