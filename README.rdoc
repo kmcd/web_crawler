@@ -1,6 +1,35 @@
 = web_crawler
 
-Description goes here.
+A prototype of a large scale web crawler written in Ruby.
+
+== Features
+
+non blocking
+dns caching
+single process, ie does not share DNS cache
+Canonical URL
+Store page directory
+
+== Architecture
+
+== Usage
+
+# Must specify a start point
+# Optionally limit to a domain
+
+crawler = Crawler.new 'http://google.com'
+crawler.start
+
+# Fetches page
+# Resolve DNS from cache
+# 
+# Extracts all URLS
+# Forms canonoical representation of all URLs
+# 
+
+# Log output
+# Stores downloaded files in .ruby_crawler/$URL
+
 
 == Note on Patches/Pull Requests
  
