@@ -12,7 +12,7 @@ class Crawler
   end
   
   def start(limit=-1)
-    until @queue.empty? || limit == 0
+    until work_finished?
       url = @queue.pop
       page = fetch_page url
       
@@ -23,6 +23,10 @@ class Crawler
   end
   
   private
+  
+  def work_finished?
+    @queue.empty? || limit == 0
+  end
   
   def fetch_page(url)
     open(DnsCache.resolve(url)).read
