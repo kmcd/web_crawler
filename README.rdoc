@@ -8,23 +8,23 @@ gem install web_crawler
 
 == Usage
 
-# Must specify a start point
-# Optionally limit to a domain
-
-crawler = Crawler.new 'http://google.com'
-crawler.start
-
-# Fetches page
-# Resolve DNS from cache
-# Extracts all URLS
-# Forms canonoical representation of all URLs
-# Log output
-# Stores downloaded files in .ruby_crawler/$URL
+   # Must specify a start point
+   # Optionally limit to a domain
+   
+   crawler = Crawler.new 'http://google.com'
+   crawler.start
+   
+   # Fetches page
+   # Resolve DNS from cache
+   # Extracts all URLS
+   # Forms canonoical representation of all URLs
+   # Log output
+   # Stores downloaded files in .ruby_crawler/$URL
 
 == Performance
 
-Benchmark.measure { Crawler.new('http://www.dmoz.org').start(10) }
-=>  0.100000   0.020000   0.120000 (  3.949688)
+   Benchmark.measure { Crawler.new('http://www.dmoz.org').start(10) }
+   =>  0.100000   0.020000   0.120000 (  3.949688)
 
 Approx 218,751 pages per day (quite slow).
 
